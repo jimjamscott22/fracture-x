@@ -87,7 +87,7 @@ export function StructuralIntegrity() {
   return (
     <main className="relative h-dvh min-h-[640px] overflow-hidden bg-background text-foreground">
       <div className="absolute inset-0"><GameScene blocks={blocks} debris={debris} mode={mode} target={target} validTarget={validTarget} heatmap={heatmap} onTarget={setTarget} onRemove={remove} onPlace={place} /></div>
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,.24),transparent_22%,transparent_72%,rgba(0,0,0,.42))]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(7,18,24,.1),transparent_24%,transparent_78%,rgba(7,18,24,.2))]" />
       <div className="pointer-events-none absolute inset-0"><Hud mode={mode} tool={tool} budget={budget} blockCount={blocks.length} testType={testType} intensity={intensity} elapsed={elapsed} maxStress={maxStress} heatmap={heatmap} paused={paused} score={score} onTool={setTool} onTestType={setTestType} onIntensity={setIntensity} onStart={start} onPause={() => setPaused((value) => !value)} onReset={reset} onClear={clear} onUndo={undo} onLoadExample={loadExample} onHeatmap={() => setHeatmap((value) => !value)} /></div>
     </main>
   )
