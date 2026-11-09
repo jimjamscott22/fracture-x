@@ -31,19 +31,19 @@
 
 :root {
   color-scheme: dark;
-  --background: oklch(0.13 0.006 190);
-  --foreground: oklch(0.94 0.008 200);
-  --card: oklch(0.17 0.008 190);
-  --card-foreground: oklch(0.94 0.008 200);
-  --popover: oklch(0.15 0.008 190);
-  --popover-foreground: oklch(0.94 0.008 200);
+  --background: oklch(0.22 0.014 215);
+  --foreground: oklch(0.97 0.006 200);
+  --card: oklch(0.27 0.014 210);
+  --card-foreground: oklch(0.97 0.006 200);
+  --popover: oklch(0.25 0.014 210);
+  --popover-foreground: oklch(0.97 0.006 200);
   --primary: oklch(0.75 0.17 62);
   --primary-foreground: oklch(0.13 0.018 52);
-  --secondary: oklch(0.23 0.012 195);
-  --secondary-foreground: oklch(0.9 0.008 200);
-  --muted: oklch(0.21 0.01 195);
-  --muted-foreground: oklch(0.65 0.012 195);
-  --accent: oklch(0.27 0.03 62);
+  --secondary: oklch(0.34 0.018 210);
+  --secondary-foreground: oklch(0.95 0.008 200);
+  --muted: oklch(0.31 0.014 210);
+  --muted-foreground: oklch(0.78 0.012 200);
+  --accent: oklch(0.36 0.05 62);
   --accent-foreground: oklch(0.92 0.03 70);
   --destructive: oklch(0.68 0.2 30);
   --border: oklch(1 0 0 / 12%);

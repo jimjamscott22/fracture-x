@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { INITIAL_BUDGET, MATERIALS } from '@/lib/game/materials'
 import { blockId, canPlace, createBlock, createStarterTower } from '@/lib/game/grid'
+import { createExampleStructure } from '@/lib/game/examples'
+import type { StructureExampleId } from '@/lib/game/examples'
 import { solveStep } from '@/lib/game/solver'
 import type { Block, DebrisBlock, GameMode, GridPosition, TestType, ToolId } from '@/lib/game/types'
 import { GameScene } from './scene'
@@ -72,12 +74,21 @@ export function StructuralIntegrity() {
   const reset = () => { setBlocks(snapshot.map((block) => ({ ...block, stress: 0, damage: 0 }))); setDebris([]); setElapsed(0); setMaxStress(0); setPaused(false); setMode('build') }
   const clear = () => { mutateBuild([]); setDebris([]); setTarget({ x: 0, y: 0, z: 0 }) }
   const undo = () => { const previous = history.at(-1); if (previous) { setBlocks(previous); setHistory((items) => items.slice(0, -1)) } }
+  const loadExample = (id: StructureExampleId) => {
+    const example = createExampleStructure(id)
+    mutateBuild(example)
+    setSnapshot(example)
+    setDebris([])
+    setElapsed(0)
+    setMaxStress(0)
+    setTarget({ x: 0, y: Math.min(17, Math.max(...example.map((block) => block.y)) + 1), z: 0 })
+  }
 
   return (
     <main className="relative h-dvh min-h-[640px] overflow-hidden bg-background text-foreground">
       <div className="absolute inset-0"><GameScene blocks={blocks} debris={debris} mode={mode} target={target} validTarget={validTarget} heatmap={heatmap} onTarget={setTarget} onRemove={remove} onPlace={place} /></div>
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,.24),transparent_22%,transparent_72%,rgba(0,0,0,.42))]" />
-      <div className="pointer-events-none absolute inset-0"><Hud mode={mode} tool={tool} budget={budget} blockCount={blocks.length} testType={testType} intensity={intensity} elapsed={elapsed} maxStress={maxStress} heatmap={heatmap} paused={paused} score={score} onTool={setTool} onTestType={setTestType} onIntensity={setIntensity} onStart={start} onPause={() => setPaused((value) => !value)} onReset={reset} onClear={clear} onUndo={undo} onHeatmap={() => setHeatmap((value) => !value)} /></div>
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(7,18,24,.1),transparent_24%,transparent_78%,rgba(7,18,24,.2))]" />
+      <div className="pointer-events-none absolute inset-0"><Hud mode={mode} tool={tool} budget={budget} blockCount={blocks.length} testType={testType} intensity={intensity} elapsed={elapsed} maxStress={maxStress} heatmap={heatmap} paused={paused} score={score} onTool={setTool} onTestType={setTestType} onIntensity={setIntensity} onStart={start} onPause={() => setPaused((value) => !value)} onReset={reset} onClear={clear} onUndo={undo} onLoadExample={loadExample} onHeatmap={() => setHeatmap((value) => !value)} /></div>
     </main>
   )
 }
