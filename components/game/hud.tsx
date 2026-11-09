@@ -1,13 +1,15 @@
 'use client'
 
-import { Activity, Gauge, Hammer, Pause, Play, RotateCcw, ShieldCheck, Trash2, Undo2, Wind, Waves, Weight } from 'lucide-react'
+import { Activity, Building2, Gauge, Hammer, Pause, Play, RotateCcw, ShieldCheck, Trash2, Undo2, Wind, Waves, Weight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { STRUCTURE_EXAMPLES } from '@/lib/game/examples'
+import type { StructureExampleId } from '@/lib/game/examples'
 import { MATERIALS } from '@/lib/game/materials'
 import type { GameMode, MaterialId, TestType, ToolId } from '@/lib/game/types'
 
 const forceIcons = { wind: Wind, quake: Waves, weight: Weight }
 
-export function Hud({ mode, tool, budget, blockCount, testType, intensity, elapsed, maxStress, heatmap, paused, score, onTool, onTestType, onIntensity, onStart, onPause, onReset, onClear, onUndo, onHeatmap }: { mode: GameMode; tool: ToolId; budget: number; blockCount: number; testType: TestType; intensity: number; elapsed: number; maxStress: number; heatmap: boolean; paused: boolean; score: number; onTool: (tool: ToolId) => void; onTestType: (type: TestType) => void; onIntensity: (value: number) => void; onStart: () => void; onPause: () => void; onReset: () => void; onClear: () => void; onUndo: () => void; onHeatmap: () => void }) {
+export function Hud({ mode, tool, budget, blockCount, testType, intensity, elapsed, maxStress, heatmap, paused, score, onTool, onTestType, onIntensity, onStart, onPause, onReset, onClear, onUndo, onLoadExample, onHeatmap }: { mode: GameMode; tool: ToolId; budget: number; blockCount: number; testType: TestType; intensity: number; elapsed: number; maxStress: number; heatmap: boolean; paused: boolean; score: number; onTool: (tool: ToolId) => void; onTestType: (type: TestType) => void; onIntensity: (value: number) => void; onStart: () => void; onPause: () => void; onReset: () => void; onClear: () => void; onUndo: () => void; onLoadExample: (id: StructureExampleId) => void; onHeatmap: () => void }) {
   return (
     <>
       <header className="pointer-events-auto absolute inset-x-4 top-4 flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-black/70 px-4 py-3 backdrop-blur-xl md:inset-x-6">
@@ -25,7 +27,11 @@ export function Hud({ mode, tool, budget, blockCount, testType, intensity, elaps
       </header>
 
       <aside className="pointer-events-auto absolute bottom-20 left-4 flex w-[164px] flex-col gap-2 rounded-lg border border-white/10 bg-black/75 p-3 backdrop-blur-xl md:bottom-auto md:left-6 md:top-28 md:w-[190px]">
-        <p className="px-1 font-mono text-[10px] tracking-[0.2em] text-muted-foreground">MATERIAL LIBRARY</p>
+        <div className="flex items-center justify-between px-1"><p className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground">EXAMPLE STRUCTURES</p><Building2 className="text-primary" aria-hidden="true" /></div>
+        <div className="grid grid-cols-2 gap-1.5">
+          {STRUCTURE_EXAMPLES.map((example) => <button key={example.id} disabled={mode !== 'build'} onClick={() => onLoadExample(example.id)} title={example.description} className="rounded-md border border-white/7 bg-white/[0.03] px-2 py-2 text-left text-[10px] font-medium leading-tight transition hover:border-primary/60 hover:bg-primary/10 disabled:opacity-40">{example.name}</button>)}
+        </div>
+        <p className="px-1 pt-1 font-mono text-[10px] tracking-[0.2em] text-muted-foreground">MATERIAL LIBRARY</p>
         {(Object.keys(MATERIALS) as MaterialId[]).map((id) => {
           const material = MATERIALS[id]
           return <button key={id} disabled={mode !== 'build'} onClick={() => onTool(id)} className={`flex items-center gap-3 rounded-md border px-3 py-2.5 text-left transition ${tool === id ? 'border-primary bg-primary/10' : 'border-white/7 bg-white/[0.03] hover:bg-white/[0.07]'} disabled:opacity-40`}><span className="size-4 rounded-sm border border-white/20" style={{ background: material.color }} /><span className="min-w-0 flex-1"><span className="block text-xs font-medium">{material.name}</span><span className="block truncate text-[10px] text-muted-foreground">{material.description}</span></span><span className="font-mono text-[10px] text-primary">${material.cost}</span></button>
